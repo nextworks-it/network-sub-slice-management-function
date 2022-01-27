@@ -1,0 +1,16 @@
+it/nextworks/nfvmano/nssmf/service/messages/provisioning/TerminateNssiRequestMessage.class
+it/nextworks/nfvmano/nssmf/service/specialized/testdefault/TestEventHandler.class
+it/nextworks/nfvmano/nssmf/service/messages/provisioning/InstantiateNssiRequestMessage.class
+it/nextworks/nfvmano/nssmf/service/NssmfLcmService$1.class
+it/nextworks/nfvmano/nssmf/service/nssmanagement/NssLcmEventHandler.class
+it/nextworks/nfvmano/nssmf/service/specialized/testdefault/TestInstantiationPayload.class
+it/nextworks/nfvmano/nssmf/service/messages/provisioning/ModifyNssiRequestMessage.class
+it/nextworks/nfvmano/nssmf/service/messages/BaseMessage.class
+it/nextworks/nfvmano/nssmf/service/nbi/NsmfRestClient.class
+it/nextworks/nfvmano/nssmf/service/nssmanagement/NssLcmEventHandler$1.class
+it/nextworks/nfvmano/nssmf/service/interfaces/BaseNssProvisioningServiceInterface.class
+it/nextworks/nfvmano/nssmf/service/messages/notification/NssiStatusChangeNotiticationMessage.class
+it/nextworks/nfvmano/nssmf/service/nbi/ProvisioningRestController.class
+it/nextworks/nfvmano/nssmf/service/messages/NssmfMessageType.class
+it/nextworks/nfvmano/nssmf/service/NssmfLcmService.class
+it/nextworks/nfvmano/nssmf/service/nbi/NsmfNotifier.class

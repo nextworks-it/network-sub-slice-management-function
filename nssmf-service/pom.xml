@@ -23,6 +23,12 @@
     <artifactId>nssmf-service</artifactId>
     <version>0.0.1</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -31,11 +37,19 @@
     </parent>
 
     <dependencies>
+        <!--   CUSTOM MODULE DEPENDENCIES   -->
         <dependency>
             <groupId>it.nextworks.nfvmano</groupId>
             <artifactId>vs-common-libs</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>it.nextworks.nfvmano</groupId>
+            <artifactId>nssmf-record-service</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--   ##########################   -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -51,6 +65,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>2.5.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>it.nextworks.nfvmano</groupId>
+            <artifactId>OranRecordService</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

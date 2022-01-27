@@ -85,6 +85,11 @@
             <version>2.5.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>it.nextworks.nfvmano</groupId>
+            <artifactId>Specific_NSSMF_implementations</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
