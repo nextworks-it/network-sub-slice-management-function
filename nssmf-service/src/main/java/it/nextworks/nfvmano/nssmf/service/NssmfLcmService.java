@@ -27,7 +27,6 @@ import it.nextworks.nfvmano.nssmf.service.messages.provisioning.TerminateNssiReq
 import it.nextworks.nfvmano.nssmf.service.nbi.NsmfNotifier;
 import it.nextworks.nfvmano.nssmf.record.RecordServiceFactory;
 import it.nextworks.nfvmano.nssmf.service.nssmanagement.NssLcmEventHandler;
-import it.nextworks.nfvmano.oran.recordservice.service.OranRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
