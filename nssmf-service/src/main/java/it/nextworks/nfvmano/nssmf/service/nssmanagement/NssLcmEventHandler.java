@@ -21,6 +21,7 @@ import it.nextworks.nfvmano.libs.vs.common.nsmf.elements.NssiNotifType;
 import it.nextworks.nfvmano.libs.vs.common.nsmf.messages.NsmfNotificationMessage;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.elements.NssiErrors;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.elements.NssiStatus;
+import it.nextworks.nfvmano.nssmf.service.factory.DriverFactory;
 import it.nextworks.nfvmano.nssmf.service.messages.BaseMessage;
 import it.nextworks.nfvmano.nssmf.service.messages.NssmfMessageType;
 import it.nextworks.nfvmano.nssmf.service.messages.notification.NssiStatusChangeNotiticationMessage;
@@ -54,6 +55,7 @@ public abstract class NssLcmEventHandler {
     private NssiBaseRecordService nssiBaseRecordService;
     private boolean enableAutoNotification = false;
     private Environment env;
+    private DriverFactory driverFactory;
 
 
     public NssLcmEventHandler() {
@@ -72,6 +74,15 @@ public abstract class NssLcmEventHandler {
 
     public Environment getEnvironment(){
         return env;
+    }
+
+    //It can be override to do something similar to setRecordServiceFactory method
+    public void setDriverFactory(DriverFactory driverFactory){
+        this.driverFactory=driverFactory;
+    }
+
+    public DriverFactory getDriverFactory(){
+        return driverFactory;
     }
 
     public void setRecordServiceFactory(RecordServiceFactory recordServiceFactory) {

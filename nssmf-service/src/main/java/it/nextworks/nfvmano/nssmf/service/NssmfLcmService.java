@@ -21,6 +21,7 @@ import com.google.common.eventbus.EventBus;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.messages.provisioning.NssmfBaseProvisioningMessage;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.interfaces.NssmfLcmConfigInterface;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.interfaces.NssmfLcmProvisioningInterface;
+import it.nextworks.nfvmano.nssmf.service.factory.DriverFactory;
 import it.nextworks.nfvmano.nssmf.service.messages.provisioning.ModifyNssiRequestMessage;
 import it.nextworks.nfvmano.nssmf.service.messages.provisioning.InstantiateNssiRequestMessage;
 import it.nextworks.nfvmano.nssmf.service.messages.provisioning.TerminateNssiRequestMessage;
@@ -70,6 +71,8 @@ public class NssmfLcmService implements NssmfLcmProvisioningInterface, NssmfLcmC
 
     @Autowired
     private Environment env;
+    @Autowired
+    private DriverFactory driverFactory;
 
     /**
      *
@@ -147,6 +150,7 @@ public class NssmfLcmService implements NssmfLcmProvisioningInterface, NssmfLcmC
         eventHandler.setRecordServiceFactory(recordServiceFactory);
         eventHandler.setNsmfNotifier(nsmfNotifier);
         eventHandler.setEnvironment(env);
+        eventHandler.setDriverFactory(driverFactory);
         eventBus.register(eventHandler);
         nssLcmEventHandlers.put(nssId, eventHandler);
         log.debug("New NSSI ID created: " + nssId.toString());
