@@ -37,8 +37,11 @@ public class NsmfNotifier implements NsmfNotificationInterface {
     private String username;
     @Value("${nssmf.nsmfnotifier.auth.pwd}")
     private String password;
-    @Value("${nssmf.nsmfnotifier.url}")
-    private String baseurl;
+    @Value("${nssmf.nsmfnotifier.notifyUrl}")
+    private String notifyUrl;
+
+    @Value("${nssmf.nsmfnotifier.loginUrl:noLogin}")
+    private String loginUrl;
 
     private NsmfRestClient nsmfRestClient;
 
@@ -46,7 +49,14 @@ public class NsmfNotifier implements NsmfNotificationInterface {
     public void notifyNsmf(NsmfNotificationMessage nsmfNotificationMessage) {
         log.debug("Sending NSSI Status change notification");
         log.debug("Requested by " + nsmfNotificationMessage.getNssiId().toString());
-        if (nsmfRestClient.authenticate(username, password)){
+
+        boolean authenticated;
+        if (loginUrl.equals("noLogin"))
+            authenticated=true;
+        else
+            authenticated=nsmfRestClient.authenticate(username, password);
+
+        if (authenticated){
             nsmfRestClient.notifyNsmf(nsmfNotificationMessage);
             log.debug("Notification Sent");
         }else
@@ -55,7 +65,7 @@ public class NsmfNotifier implements NsmfNotificationInterface {
 
     @PostConstruct
     private void initRestClient(){
-        nsmfRestClient = new NsmfRestClient(baseurl);
+        nsmfRestClient = new NsmfRestClient(notifyUrl, loginUrl);
     }
 }
 
@@ -63,12 +73,15 @@ class NsmfRestClient implements NsmfNotificationInterface{
 
     private static final Logger log = LoggerFactory.getLogger(NsmfRestClient.class);
     private RestTemplate restTemplate;
-    private String baseUrl;
+    private String notifyUrl;
+
+    private String loginUrl;
     private String authCookie;
 
-    NsmfRestClient(String baseUrl) {
+    NsmfRestClient(String notifyUrl, String loginUrl) {
         restTemplate = new RestTemplate();
-        this.baseUrl = baseUrl;
+        this.notifyUrl = notifyUrl;
+        this.loginUrl= loginUrl;
     }
 
     boolean authenticate(String username, String password){
@@ -81,7 +94,7 @@ class NsmfRestClient implements NsmfNotificationInterface{
         map.add("password", password);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
         try{
-            ResponseEntity<String> httpResponse = restTemplate.exchange(baseUrl +"/login", HttpMethod.POST, request, String.class);
+            ResponseEntity<String> httpResponse = restTemplate.exchange(loginUrl, HttpMethod.POST, request, String.class);
             HttpHeaders headersResp = httpResponse.getHeaders();
             HttpStatus code = httpResponse.getStatusCode();
 
@@ -103,38 +116,36 @@ class NsmfRestClient implements NsmfNotificationInterface{
 
     @Override
     public void notifyNsmf(NsmfNotificationMessage nsmfNotificationMessage) {
+        HttpHeaders header = new HttpHeaders();
+        header.add("Content-Type", "application/json");
 
-        if(this.authCookie!=null) {
-            HttpHeaders header = new HttpHeaders();
-            header.add("Content-Type", "application/json");
-
+        if(authCookie!=null)
             header.add("Cookie", this.authCookie);
 
 
-            HttpEntity<?> postEntity = new HttpEntity<>(nsmfNotificationMessage, header);
+        HttpEntity<?> postEntity = new HttpEntity<>(nsmfNotificationMessage, header);
 
-            String url = baseUrl + "/nssmf-notifications";
+        if(notifyUrl.contains("%nssi_id%"))
+            notifyUrl=notifyUrl.replace("%nssi_id%", nsmfNotificationMessage.getNssiId().toString());
 
-            try {
-                log.debug("Sending HTTP message to notify network slice status change.");
-                ResponseEntity<String> httpResponse =
-                        restTemplate.exchange(url, HttpMethod.POST, postEntity, String.class);
+        try {
+            log.debug("Sending HTTP message to notify network slice status change.");
+            ResponseEntity<String> httpResponse =
+                    restTemplate.exchange(notifyUrl, HttpMethod.POST, postEntity, String.class);
 
-                log.debug("Response code: " + httpResponse.getStatusCode().toString());
-                HttpStatus code = httpResponse.getStatusCode();
+            log.debug("Response code: " + httpResponse.getStatusCode().toString());
+            HttpStatus code = httpResponse.getStatusCode();
 
-                if (code.equals(HttpStatus.OK)) {
-                    log.debug("Notification correctly dispatched.");
-                } else {
-                    log.debug("Error while sending notification");
-                }
-
-            } catch (RestClientException e) {
+            if (code.equals(HttpStatus.OK)) {
+                log.debug("Notification correctly dispatched.");
+            } else {
                 log.debug("Error while sending notification");
-                log.debug(e.toString());
-                log.debug("RestClientException response: Message " + e.getMessage());
             }
-        }else log.debug("Authentication Required!");
 
+        } catch (RestClientException e) {
+            log.debug("Error while sending notification");
+            log.debug(e.toString());
+            log.debug("RestClientException response: Message " + e.getMessage());
+        }
     }
 }

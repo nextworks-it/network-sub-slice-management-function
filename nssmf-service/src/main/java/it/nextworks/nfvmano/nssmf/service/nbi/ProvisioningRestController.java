@@ -103,12 +103,15 @@ public class ProvisioningRestController {
         }
     }
 
-    @RequestMapping(value = "/nss/{nsiId}/action/instantiate", method = RequestMethod.PUT)
-    public ResponseEntity<?> instantiateNsi(@PathVariable String nsiId, @RequestBody Map<String, Object> request ) {
-        log.debug("Received request to instantiate network slice " + nsiId);
+    @RequestMapping(value = "/nss/{nssiId}/action/instantiate", method = RequestMethod.PUT)
+    public ResponseEntity<?> instantiateNsi(@PathVariable String nssiId, @RequestBody Map<String, Object> request ) {
+        log.debug("Received request to instantiate network slice " + nssiId);
         try {
+            NssmfBaseProvisioningMessage baseRequest=(NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass);
+            if (!nssiId.equals(baseRequest.getNssiId().toString()))
+                throw new MalformattedElementException("NSSI ID within path differs from request body ones");
 
-            nssmfLcmService.instantiateNetworkSubSlice((NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass));
+            nssmfLcmService.instantiateNetworkSubSlice(baseRequest);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (NotExistingEntityException e) {
             log.error("NS instantiation failed due to missing elements in DB.");
@@ -124,12 +127,15 @@ public class ProvisioningRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @RequestMapping(value = "/nss/{nsiId}/action/modify", method = RequestMethod.PUT)
-    public ResponseEntity<?> modifyNsi(@PathVariable String nsiId, @RequestBody Map<String, Object> request) {
-        log.debug("Received request to modify network slice " + nsiId);
+    @RequestMapping(value = "/nss/{nssiId}/action/modify", method = RequestMethod.PUT)
+    public ResponseEntity<?> modifyNsi(@PathVariable String nssiId, @RequestBody Map<String, Object> request) {
+        log.debug("Received request to modify network slice " + nssiId);
         try {
+            NssmfBaseProvisioningMessage baseRequest=(NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass);
+            if (!nssiId.equals(baseRequest.getNssiId().toString()))
+                throw new MalformattedElementException("NSSI ID within path differs from request body ones");
 
-            nssmfLcmService.modifyNetworkSlice((NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass));
+            nssmfLcmService.modifyNetworkSlice(baseRequest);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (NotExistingEntityException e) {
             log.error("NS modification failed due to missing elements in DB.");
@@ -145,11 +151,15 @@ public class ProvisioningRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @RequestMapping(value = "/nss/{nsiId}/action/terminate", method = RequestMethod.PUT)
-    public ResponseEntity<?> terminateNsi(@PathVariable String nsiId, @RequestBody Map<String, Object> request) {
-        log.debug("Received request to terminate network slice " + nsiId);
+    @RequestMapping(value = "/nss/{nssiId}/action/terminate", method = RequestMethod.PUT)
+    public ResponseEntity<?> terminateNsi(@PathVariable String nssiId, @RequestBody Map<String, Object> request) {
+        log.debug("Received request to terminate network slice " + nssiId);
         try {
-            nssmfLcmService.terminateNetworkSliceInstance(map.convertValue(request, NssmfBaseProvisioningMessage.class));
+            NssmfBaseProvisioningMessage baseRequest=(NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass);
+            if (!nssiId.equals(baseRequest.getNssiId().toString()))
+                throw new MalformattedElementException("NSSI ID within path differs from request body ones");
+
+            nssmfLcmService.terminateNetworkSliceInstance(baseRequest);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (NotExistingEntityException e) {
             log.error("NS termination failed due to missing elements in DB.");
