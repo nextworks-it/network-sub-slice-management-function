@@ -17,8 +17,8 @@ package it.nextworks.nfvmano;
 import it.nextworks.nfvmano.libs.vs.common.exceptions.*;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.messages.provisioning.InstantiateNssiRequest;
 import it.nextworks.nfvmano.libs.vs.common.nssmf.messages.provisioning.TerminateNssiRequest;
-import it.nextworks.nfvmano.nssmf.NssmfLcmService;
-import it.nextworks.nfvmano.nssmf.specialized.testdefault.TestInstantiationPayload;
+//import it.nextworks.nfvmano.nssmf.NssmfLcmService;
+//import it.nextworks.nfvmano.nssmf.specialized.testdefault.TestInstantiationPayload;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,32 +28,32 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = NssmfApplication.class)
+//@SpringBootTest(classes = NssmfApplication.class)
 public class SpecializedEventHandlerTest {
 
-    @Autowired
-    private NssmfLcmService nssmfLcmService;
-    @Test
-    public void instantiationTest() throws IllegalAccessException, MethodNotImplementedException, InstantiationException,
-            ClassNotFoundException, NotPermittedOperationException, MalformattedElementException, FailedOperationException,
-            NotExistingEntityException, AlreadyExistingEntityException {
-
-        //nssmfLcmService.setSpecializedEventHandlerClass("it.nextworks.nfvmano.nssmf.specialized.testdefault.TestEventHandler");
-        UUID nssiId = nssmfLcmService.createNetworkSubSliceIdentifier();
-        InstantiateNssiRequest instantiateNssiRequest = new InstantiateNssiRequest(nssiId);
-
-        //Specialized provisioning payload
-        TestInstantiationPayload testInstantiationPayload = new TestInstantiationPayload();
-        testInstantiationPayload.setInstantiationDetail1("This is the end");
-        testInstantiationPayload.setGetInstantiationDetail2("My only friend, the end");
-
-        //Assemble request
-        instantiateNssiRequest.setProvisioningPayload(testInstantiationPayload);
-
-        nssmfLcmService.instantiateNetworkSubSlice(instantiateNssiRequest);
-
-        TerminateNssiRequest terminateNssiRequest = new TerminateNssiRequest(nssiId);
-        nssmfLcmService.terminateNetworkSliceInstance(terminateNssiRequest);
-
-    }
+//    @Autowired
+//    private NssmfLcmService nssmfLcmService;
+//    @Test
+//    public void instantiationTest() throws IllegalAccessException, MethodNotImplementedException, InstantiationException,
+//            ClassNotFoundException, NotPermittedOperationException, MalformattedElementException, FailedOperationException,
+//            NotExistingEntityException, AlreadyExistingEntityException {
+//
+//        //nssmfLcmService.setSpecializedEventHandlerClass("it.nextworks.nfvmano.nssmf.specialized.testdefault.TestEventHandler");
+//        UUID nssiId = nssmfLcmService.createNetworkSubSliceIdentifier();
+//        InstantiateNssiRequest instantiateNssiRequest = new InstantiateNssiRequest(nssiId);
+//
+//        //Specialized provisioning payload
+//        TestInstantiationPayload testInstantiationPayload = new TestInstantiationPayload();
+//        testInstantiationPayload.setInstantiationDetail1("This is the end");
+//        testInstantiationPayload.setGetInstantiationDetail2("My only friend, the end");
+//
+//        //Assemble request
+//        instantiateNssiRequest.setProvisioningPayload(testInstantiationPayload);
+//
+//        nssmfLcmService.instantiateNetworkSubSlice(instantiateNssiRequest);
+//
+//        TerminateNssiRequest terminateNssiRequest = new TerminateNssiRequest(nssiId);
+//        nssmfLcmService.terminateNetworkSliceInstance(terminateNssiRequest);
+//
+//    }
 }

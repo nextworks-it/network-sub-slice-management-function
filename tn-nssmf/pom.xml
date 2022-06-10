@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>it.nextworks.nfvmano</groupId>
-    <artifactId>NssmfAggregator</artifactId>
+    <artifactId>tn-nssmf-aggregator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>NSSMF Aggregator</name>
+    <name>TN NSSMF Aggregator</name>
 
     <modules>
         <!-- Add here your custom module -->
-        <module>nssmf-service</module>
-        <module>nssmf-app</module>
-        <module>tn-nssmf/tn-nssmf-handler</module>
+        <module>TapiRecordServiceIM</module>
+        <module>TapiRecordService</module>
+        <module>tn-nssmf-handler</module>
     </modules>
 
 </project>
