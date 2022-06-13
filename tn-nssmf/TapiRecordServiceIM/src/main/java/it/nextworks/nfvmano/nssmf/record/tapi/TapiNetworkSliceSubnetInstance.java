@@ -20,12 +20,12 @@ public class TapiNetworkSliceSubnetInstance {
 
     @ElementCollection(targetClass=String.class)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private String connectivityServiceIds;
+    private List<String> connectivityServiceIds;
 
     public TapiNetworkSliceSubnetInstance(){}
 
     public TapiNetworkSliceSubnetInstance(UUID nssiId,
-                                          String connectivityServiceIds){
+                                          List<String> connectivityServiceIds){
         this.nssiId=nssiId;
         this.connectivityServiceIds=connectivityServiceIds;
     }
@@ -38,12 +38,16 @@ public class TapiNetworkSliceSubnetInstance {
         this.nssiId = nssiId;
     }
 
-    public String getConnectivityServiceIds() {
+    public List<String> getConnectivityServiceIds() {
         return connectivityServiceIds;
     }
 
-    public void setConnectivityServiceIds(String connectivityServiceIds) {
+    public void setConnectivityServiceIds(List<String> connectivityServiceIds) {
         this.connectivityServiceIds = connectivityServiceIds;
+    }
+
+    public void addConnectivityServiceId(String connectivityServiceId){
+        this.connectivityServiceIds.add(connectivityServiceId);
     }
 
 }

@@ -44,12 +44,12 @@ public class TapiRecordService {
         return nssi.get();
     }
 
-    public synchronized void addConnectivityService(UUID nssiId,
-                                                    String connectivityServiceId) throws NotExistingEntityException {
+    public synchronized void setConnectivityServices(UUID nssiId,
+                                                    List<String> connectivityServiceIds) throws NotExistingEntityException {
         log.debug("Updating NssInstance with ID {}", nssiId);
         try{
             TapiNetworkSliceSubnetInstance nssi=getNssInstance(nssiId);
-            nssi.addConnectivityService(connectivityServiceId);
+            nssi.setConnectivityServiceIds(connectivityServiceIds);
             nssiRepository.saveAndFlush(nssi);
             log.debug("Updated nssi with ID {}", nssiId);
         }catch (NotExistingEntityException e){
@@ -65,6 +65,29 @@ public class TapiRecordService {
         } catch (NotExistingEntityException e){
             log.error("NSSI with ID "+nssiId.toString()+" not present in DB. Impossible to retrieve CS IDs");
             return null;
+        }
+    }
+
+    public synchronized void addConnectivityService(UUID nssiId, String connectivityServiceId)throws NotExistingEntityException{
+        log.debug("Updating NssInstance with ID {} adding a connectivity service", nssiId);
+        try{
+            TapiNetworkSliceSubnetInstance nssi=getNssInstance(nssiId);
+            nssi.addConnectivityServiceId(connectivityServiceId);
+            nssiRepository.saveAndFlush(nssi);
+            log.debug("Updated nssi with ID {}", nssiId);
+        }catch (NotExistingEntityException e){
+            log.error("NSSI with ID "+nssiId.toString()+" not present in DB. Impossible to update it");
+        }
+    }
+
+    public synchronized void deleteNssInstance(UUID nssiId) throws NotExistingEntityException{
+        log.debug("Deleting NssInstance with ID {}", nssiId);
+        try{
+            TapiNetworkSliceSubnetInstance nssi=getNssInstance(nssiId);
+            nssiRepository.delete(nssi);
+            log.debug("Deleted nssi with ID {}", nssiId);
+        }catch (NotExistingEntityException e){
+            log.error("NSSI with ID "+nssiId.toString()+" not present in DB. Impossible to delete it");
         }
     }
 }
