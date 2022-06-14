@@ -61,17 +61,17 @@ public class TransportNssLcmEventHandler extends NssLcmEventHandler {
         List<String> csIds=new ArrayList<>();
         for(ConnectivityServiceResourceAllocation csResource: ((SdnNssResourceAllocation) payload.getNssResourceAllocation()).getCsResources()) {
             connectivityServiceId=UUID.randomUUID().toString(); // generate UUID
-            log.info("Creating Connectivity Service in CTTC domain");
+            log.info("Creating Connectivity Service in CTTC domain with ID {}", connectivityServiceId);
             if(tapiClient.createConnectivityService(connectivityServiceId, csResource.getIngressSipId(), csResource.getEgressSipId(), getLayerProtocolQualifier(csResource.getIngressSipId()), csResource.getCapacity())){
                 csIds.add(connectivityServiceId);
             } else {
                 if(!csIds.isEmpty()){
                     tapiClient.deleteConnectivityService(csIds.get(0));
-                    log.error("Impossible to create connectivity service, instantiation failed");
-                    notif.setSuccess(false);
-                    this.getEventBus().post(notif);
-                    return ;
                 }
+                log.error("Impossible to create connectivity service, instantiation failed");
+                notif.setSuccess(false);
+                this.getEventBus().post(notif);
+                return ;
             }
         }
 
