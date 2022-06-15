@@ -155,7 +155,10 @@ public class ProvisioningRestController {
     public ResponseEntity<?> terminateNsi(@PathVariable String nssiId, @RequestBody Map<String, Object> request) {
         log.debug("Received request to terminate network slice " + nssiId);
         try {
-            NssmfBaseProvisioningMessage baseRequest=(NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass);
+            //TODO : check if it is needed the implementation of a specific message for the termination request
+            //NssmfBaseProvisioningMessage baseRequest=(NssmfBaseProvisioningMessage)map.convertValue(request, this.messageClass);
+
+            NssmfBaseProvisioningMessage baseRequest= new NssmfBaseProvisioningMessage(UUID.fromString(nssiId));
             if (!nssiId.equals(baseRequest.getNssiId().toString()))
                 throw new MalformattedElementException("NSSI ID within path differs from request body ones");
 
