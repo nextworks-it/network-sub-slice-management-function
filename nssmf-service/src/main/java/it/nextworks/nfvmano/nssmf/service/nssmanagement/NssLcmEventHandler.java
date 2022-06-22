@@ -292,9 +292,15 @@ public abstract class NssLcmEventHandler {
             }
             if(enableAutoNotification){
                 log.info("["+networkSubSliceInstanceId.toString()+"] - Send notification to NSMF");
-                NsmfNotificationMessage notificationMessage = new NsmfNotificationMessage(networkSubSliceInstanceId,
-                        NssiNotifType.STATUS_CHANGED, nextStatus);
-                if(nextStatus == NssiStatus.ERROR) notificationMessage.setNssiError(NssiErrors.STATUS_TRANSITION);
+                NsmfNotificationMessage notificationMessage;
+                if(nextStatus == NssiStatus.ERROR) {
+                    notificationMessage=new NsmfNotificationMessage(networkSubSliceInstanceId,
+                            NssiNotifType.ERROR, nextStatus);
+                    notificationMessage.setNssiError(NssiErrors.STATUS_TRANSITION);
+                } else {
+                    notificationMessage = new NsmfNotificationMessage(networkSubSliceInstanceId,
+                            NssiNotifType.STATUS_CHANGED, nextStatus);
+                }
                 nsmfNotifier.notifyNsmf(notificationMessage);
             }
         }else

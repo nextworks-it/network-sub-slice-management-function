@@ -37,8 +37,10 @@ public class TransportNssLcmEventHandler extends NssLcmEventHandler {
 
     private void configPlugins(){
         String basePath= getEnvironment().getProperty("controller.basepath");
+        int readTimeout=Integer.parseInt(getEnvironment().getProperty("controller.readTimeout"));
+        int connectionTimeout=Integer.parseInt(getEnvironment().getProperty("controller.connectionTimeout"));
 
-        this.tapiClient=new TapiClient(basePath);
+        this.tapiClient=new TapiClient(basePath, readTimeout, connectionTimeout);
     }
 
     private String getLayerProtocolQualifier(String inputSipId){
