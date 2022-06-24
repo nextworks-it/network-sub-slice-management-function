@@ -34,7 +34,7 @@ services:
       - spring.datasource.password=postgres
       - nssmf.eventhandler.class=it.nextworks.nfvmano.nssmf.handler.transport.nssmanagement.TransportNssLcmEventHandler
       - nssmf.provisioning.message.class=it.nextworks.nfvmano.libs.vs.common.nssmf.messages.specialized.transport.TransportInstantiatePayload
-      - controller.basepath=http://10.0.50.7:4900/restconf
+      - controller.basepath=http://10.0.38.19:4900/restconf
       - security.basic.enabled=false
       - sebastian.admin=admin
       - management.security.enabled=false
