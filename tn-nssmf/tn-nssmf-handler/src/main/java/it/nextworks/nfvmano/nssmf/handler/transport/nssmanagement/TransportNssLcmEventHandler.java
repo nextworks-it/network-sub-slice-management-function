@@ -39,6 +39,7 @@ public class TransportNssLcmEventHandler extends NssLcmEventHandler {
         String basePath= getEnvironment().getProperty("controller.basepath");
         int readTimeout=Integer.parseInt(getEnvironment().getProperty("controller.readTimeout"));
         int connectionTimeout=Integer.parseInt(getEnvironment().getProperty("controller.connectionTimeout"));
+        setEnableAutoNotification(true);
 
         this.tapiClient=new TapiClient(basePath, readTimeout, connectionTimeout);
     }
