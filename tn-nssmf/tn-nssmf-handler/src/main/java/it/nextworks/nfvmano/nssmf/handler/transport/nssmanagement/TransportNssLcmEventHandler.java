@@ -75,6 +75,11 @@ public class TransportNssLcmEventHandler extends NssLcmEventHandler {
                 this.getEventBus().post(notif);
                 return ;
             }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         tapiRecordService.setConnectivityServices(this.getNetworkSubSliceInstanceId(),csIds);
