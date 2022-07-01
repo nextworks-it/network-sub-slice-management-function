@@ -15,6 +15,11 @@
 
 package it.nextworks.nfvmano.nssmf.service.nbi;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import it.nextworks.nfvmano.libs.vs.common.nsmf.interfaces.NsmfNotificationInterface;
 import it.nextworks.nfvmano.libs.vs.common.nsmf.messages.NsmfNotificationMessage;
 import org.slf4j.Logger;
@@ -129,14 +134,23 @@ class NsmfRestClient implements NsmfNotificationInterface{
             notifyUrl=notifyUrl.replace("%nssi_id%", nsmfNotificationMessage.getNssiId().toString());
 
         try {
-            log.debug("Sending HTTP message to notify network slice status change.");
+            log.debug("Sending HTTP message to notify network slice status change at {} .", notifyUrl);
+            ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+            try {
+                log.debug(mapper.writeValueAsString(postEntity));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
             ResponseEntity<String> httpResponse =
                     restTemplate.exchange(notifyUrl, HttpMethod.POST, postEntity, String.class);
 
             log.debug("Response code: " + httpResponse.getStatusCode().toString());
             HttpStatus code = httpResponse.getStatusCode();
 
-            if (code.equals(HttpStatus.OK)) {
+            if (code.equals(HttpStatus.ACCEPTED)) {
                 log.debug("Notification correctly dispatched.");
             } else {
                 log.debug("Error while sending notification");
