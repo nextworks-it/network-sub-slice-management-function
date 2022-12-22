@@ -75,18 +75,21 @@ public class Osm10Client implements NsLcmProviderInterface, NetworkSliceLcmProvi
             UUID osmId = getIdForNsdId(request.getNsdId());
             osmReq.setNsdId(osmId);
             if(vnfParams.exists()&& !vnfParams.isDirectory()){
+                log.debug("Parsing VNF Params config file:"+vnfParams.getAbsolutePath());
                 try {
-                    log.debug("Parsing VNF Params config file:"+vnfParams.getAbsolutePath());
+
                     Reader reader = Files.newBufferedReader(Paths.get(vnfParams.getAbsolutePath()));
                     List<InstantiateNsRequestAdditionalParamsForVnf> vnfParamsReq
                             = new Gson().fromJson(reader, new TypeToken<List<InstantiateNsRequestAdditionalParamsForVnf>>() {
                     }.getType());
+                    String jsonInString = (new Gson()).toJson(vnfParams);
+                    log.debug("Retrieved VNF params:"+jsonInString);
                     osmReq.setAdditionalParamsForVnf(vnfParamsReq);
                 } catch (IOException e) {
                     log.debug("Error parsing VNF params",e);
                     throw new FailedOperationException(e);
                 }
-            }
+            }else log.debug("VNF Params file not found");
             return nsInstancesApi.addNSinstance(osmReq).getId().toString();
 
 
