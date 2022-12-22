@@ -45,7 +45,7 @@ public class OsmLcmOperation {
         //TODO: n.venturi to solve this
         InstantiateNsRequest instantiateNsRequest = new InstantiateNsRequest();
         instantiateNsRequest.setVimAccountId(UUID.fromString(UUID_VIM_ACCOUNT));
-        instantiateNsRequest.setNsdId(UUID.fromString(nsdId));
+        //instantiateNsRequest.setNsdId(nsdId);
         instantiateNsRequest.setNsName(nsName);
 
         InstantiateNsRequestInternal instantiateNsRequestInternal = new InstantiateNsRequestInternal(nsName, nsdId, networkServiceInstanceIdentifier, new HashMap<>());
