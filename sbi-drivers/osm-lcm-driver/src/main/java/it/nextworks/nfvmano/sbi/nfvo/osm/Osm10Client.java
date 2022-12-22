@@ -79,7 +79,7 @@ public class Osm10Client implements NsLcmProviderInterface, NetworkSliceLcmProvi
                     log.debug("Parsing VNF Params config file:"+vnfParams.getAbsolutePath());
                     Reader reader = Files.newBufferedReader(Paths.get(vnfParams.getAbsolutePath()));
                     List<InstantiateNsRequestAdditionalParamsForVnf> vnfParamsReq
-                            = new Gson().fromJson(reader, new TypeToken<List<NetSliceSubnet>>() {
+                            = new Gson().fromJson(reader, new TypeToken<List<InstantiateNsRequestAdditionalParamsForVnf>>() {
                     }.getType());
                     osmReq.setAdditionalParamsForVnf(vnfParamsReq);
                 } catch (IOException e) {
