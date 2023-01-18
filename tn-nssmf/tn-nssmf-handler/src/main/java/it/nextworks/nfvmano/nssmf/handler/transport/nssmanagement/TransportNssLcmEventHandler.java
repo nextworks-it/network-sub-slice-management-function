@@ -65,12 +65,18 @@ public class TransportNssLcmEventHandler extends NssLcmEventHandler {
         for(ConnectivityServiceResourceAllocation csResource: ((SdnNssResourceAllocation) payload.getNssResourceAllocation()).getCsResources()) {
             connectivityServiceId=UUID.randomUUID().toString(); // generate UUID
             log.info("Creating Connectivity Service in CTTC domain with ID {}", connectivityServiceId);
+            String layerProtocolQualifier = getEnvironment().getProperty("controller.layer_protocol_qualifier", "");
+            String layerProtocolName = getEnvironment().getProperty("controller.layer_protocol_name", "");
+            if(layerProtocolQualifier.isEmpty()){
+                layerProtocolQualifier= getLayerProtocolQualifier(csResource.getIngressSipId());
+            }
             if(tapiClient.createConnectivityService(connectivityServiceId,
                     csResource.getIngressSipId(),
                     csResource.getEgressSipId(),
-                    getLayerProtocolQualifier(csResource.getIngressSipId()),
+                    layerProtocolQualifier,
                     csResource.getCapacity(),
-                    csResource.getMatchAddress())){
+                    csResource.getMatchAddress(),
+                    layerProtocolName)){
                 csIds.add(connectivityServiceId);
             } else {
                 if(!csIds.isEmpty()){
