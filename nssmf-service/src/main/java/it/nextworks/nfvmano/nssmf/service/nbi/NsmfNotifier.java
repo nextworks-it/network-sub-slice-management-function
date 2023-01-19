@@ -129,9 +129,9 @@ class NsmfRestClient implements NsmfNotificationInterface{
 
 
         HttpEntity<?> postEntity = new HttpEntity<>(nsmfNotificationMessage, header);
-
-        if(notifyUrl.contains("%nssi_id%"))
-            notifyUrl=notifyUrl.replace("%nssi_id%", nsmfNotificationMessage.getNssiId().toString());
+        String rNotifyUrl = notifyUrl;
+        if(rNotifyUrl.contains("%nssi_id%"))
+            rNotifyUrl=rNotifyUrl.replace("%nssi_id%", nsmfNotificationMessage.getNssiId().toString());
 
         try {
             log.debug("Sending HTTP message to notify network slice status change at {} .", notifyUrl);
@@ -145,7 +145,7 @@ class NsmfRestClient implements NsmfNotificationInterface{
                 throw new RuntimeException(e);
             }
             ResponseEntity<String> httpResponse =
-                    restTemplate.exchange(notifyUrl, HttpMethod.POST, postEntity, String.class);
+                    restTemplate.exchange(rNotifyUrl, HttpMethod.POST, postEntity, String.class);
 
             log.debug("Response code: " + httpResponse.getStatusCode().toString());
             HttpStatus code = httpResponse.getStatusCode();
